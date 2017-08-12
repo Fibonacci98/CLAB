@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <limits.h>
+
+//delete character in buffer memory
+void clean() {
+    while (getchar() != '\n');
+}
+// get valid size of array (return positive number)
+int getValidSize(int min, int max, const char* error) {
+    int inputNumber;
+    int check;
+    char inputChar;
+    while (1) {
+        check = scanf("%d%c", &inputNumber, &inputChar);
+        if (check != 2 || inputChar != '\n') {
+        	clean();
+            printf("%s", error);
+        } else if (inputNumber < min || inputNumber > max)
+            printf("Please input number form %d to %d: ", min, max);
+        else return inputNumber;
+    }
+}
+// get valid element(return number)
+long long int getValidElement(const char* error,int position) {
+    long long int inputNumber;
+    int check;
+    char inputChar;
+    while (1) {
+        printf("Element[%d]=",position);
+        check = scanf("%lld%c", &inputNumber, &inputChar);
+        if (check != 2 || inputChar != '\n') {
+        	clean();
+            printf("%s", error);
+        }
+        else return inputNumber;
+    }
+}
+//user's input
+void input(int *sizeArray,long long int *array)
+{
+    printf("Please enter size of array: ");
+    *sizeArray=getValidSize(0,INT_MAX,"Invalid size of array!! Just enter integer: ");
+    array=(long long int *)realloc(array,((*sizeArray)+1)*sizeof(long long int));
+    //array=(long long int *)realloc(array,(*sizeArray)*sizeof(long long int));
+    //array=(long long int *)calloc(*sizeArray,sizeof(long long int));
+    int i;
+    for (i=0;i<*sizeArray;i++)
+    {
+        array[i]=getValidElement("Invalid element!! Just enter integer:\t",i);
+    }
+
+}
+void process(int *sizeArray,long long int *array)
+{
+    int i;
+    long long int min;
+    int position=-1;
+    if (*sizeArray!=0){
+        min=array[0];
+        position=0;
+    }
+    for (i=0;i<*sizeArray;i++)
+    {
+        if (array[i]<min){
+            min=array[i];
+            position=i;
+        }
+    }
+    if (sizeArray!=0){
+        printf("\nThe smallest element: %lld - Its position: %d",min,position+1);
+    }else{
+        printf("Array has no element!!");
+    }
+
+}
+int main()
+{
+    int sizeArray;
+    long long int *array;
+    array=(long long int *)malloc(sizeof(long long int));
+    input(&sizeArray,array);
+    process(&sizeArray,array);
+    return 0;
+}
+
